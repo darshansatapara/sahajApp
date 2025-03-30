@@ -1,5 +1,7 @@
 import { create } from "zustand";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const baseUrl = "http://192.168.215.43:5000/api";
 const useUserStore = create((set) => ({
   users: [],
   user: null,
@@ -12,17 +14,15 @@ const useUserStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const token = await AsyncStorage.getItem("admin_token");
-      const response = await fetch(
-        "http://192.168.215.17:5000/api/admin/users",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${baseUrl}/admin/users`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       const data = await response.json();
+      console.log(data);
       if (!response.ok)
         throw new Error(data.message || "Failed to fetch users");
       set({ users: data.users, loading: false });
@@ -35,7 +35,7 @@ const useUserStore = create((set) => ({
     console.log(userData);
     set({ loading: true, error: null });
     try {
-      const response = await fetch("http://192.168.215.17:5000/api/login", {
+      const response = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
