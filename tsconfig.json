@@ -11,7 +11,13 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "**/*.jsx",
+    "**/*.js",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "app/index.jsx",
+    "app/_layout.jsx",
+    "postcss.config.mjs",
+    "nativewind-env.d.ts"
   ]
 }
